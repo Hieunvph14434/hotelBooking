@@ -1,6 +1,7 @@
-
 .container-fluid {
-    background-color: rgb(159, 170, 170);
+    /* background-color: rgb(159, 170, 170); */
+    background-color: aliceblue;
+    padding: 0;
 }
 .container-fluid .page {
     width: 100%;
@@ -8,7 +9,7 @@
     display: flex;
 }
 .container-fluid .page .aside{
-    width: 270px;
+    width: 300px;
     border-right: 1px solid black;
     height: 100vh;
 }
@@ -27,4 +28,7 @@
 }
 .container-fluid .page .content {
     padding: 20px;
+}
+.list-user {
+    width: 90%;
 }

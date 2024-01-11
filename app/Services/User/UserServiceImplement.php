@@ -21,4 +21,18 @@ class UserServiceImplement extends Service implements UserService{
     public function getUserList($limit) {
       return $this->mainRepository->getUserList($limit);
     }
+
+    public function updateUser($id, $request) {
+      $data = $request->all();
+      $currentData = $this->mainRepository->find($id);
+      if(! is_null($data['avatar'])) {
+        $data['avatar'] = checkIssetImage($request, [
+          'image'=>'avatar',
+          'prefixName'=>'',
+          'folder'=>'uploads/users',
+          'imageOld'=> $currentData->avatar
+        ]);
+      }
+      return $this->mainRepository->update($id, $data);
+    }
 }

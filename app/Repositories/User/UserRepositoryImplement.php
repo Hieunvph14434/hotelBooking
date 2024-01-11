@@ -21,7 +21,7 @@ class UserRepositoryImplement extends Eloquent implements UserRepository{
 
    public function getUserList($limit = 5) {
         return $this->model->query()
-        ->select(["name", "email", "phone", "gender"])
+        ->select(["id", "name", "email", "phone", "gender"])
         ->whereNull("deleted_at")
         ->whereNotNull("email_verified_at")
         ->orderByDesc("created_at")

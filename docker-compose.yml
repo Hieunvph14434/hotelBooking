@@ -9,7 +9,7 @@ services:
     image: digitalocean.com/php
     container_name: app
     restart: unless-stopped
-    working_dir: /var/www/
+    # working_dir: /var/www/
     tty: true
     environment:
       - COMPOSER_MEMORY_LIMIT=-1

@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Http\Traits\CommonTrait;
+use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use CommonTrait;
     protected UserService $userService;
 
     public function __construct(UserService $userService) {
-        $this->$userService = $userService;
+        $this->userService = $userService;
     }
     /**
      * Display a listing of the resource.
@@ -19,8 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $data['users'] = $this->userService->getUserList(null);
-        dd($data['users']?->toArray());
-        return view('cms.user.list');
+        return view('cms.user.list', $data);
     }
 
     /**
@@ -52,15 +55,17 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data['user'] = $this->findOrFailAndReturn(User::class, $id);
+        return view('cms.user.update', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
-        //
+        $user = $this->userService->updateUser($id, $request);
+        return redirect()->route('users.list')->with('notice', ['success', 'Cập nhật thành công!']);
     }
 
     /**
