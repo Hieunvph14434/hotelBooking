@@ -1,0 +1,30 @@
+
+.container-fluid {
+    background-color: rgb(159, 170, 170);
+}
+.container-fluid .page {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+}
+.container-fluid .page .aside{
+    width: 270px;
+    border-right: 1px solid black;
+    height: 100vh;
+}
+.container-fluid .page .aside .title h2 {
+    text-align: center;
+    padding: 20px 0 40px 0;
+}
+.container-fluid .page .aside .nav .menu .item{
+    border-bottom: 1px solid black;
+    list-style-type: none;
+    padding: 15px 0 5px 0;
+}
+.container-fluid .page .aside .nav .menu .item a{
+    color: black;
+    text-decoration: none;
+}
+.container-fluid .page .content {
+    padding: 20px;
+}
