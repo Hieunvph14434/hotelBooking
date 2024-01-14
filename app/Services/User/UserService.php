@@ -8,5 +8,9 @@ interface UserService extends BaseService{
 
     public function getUserList($limit);
 
+    public function createUser($request);
+
     public function updateUser($id, $request);
+
+    public function deleteUser($id);
 }

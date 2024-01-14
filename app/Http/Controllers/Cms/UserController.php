@@ -13,6 +13,11 @@ class UserController extends Controller
 {
     use CommonTrait;
     protected UserService $userService;
+    protected $genders = [
+        'Male',
+        'Female',
+        'Other'
+    ];
 
     public function __construct(UserService $userService) {
         $this->userService = $userService;
@@ -31,15 +36,17 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $data['genders'] = $this->genders;
+        return view('cms.user.create', $data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = $this->userService->createUser($request);
+        return redirect()->route('users.list')->with('notice', ['success', 'Create user successfully!']);
     }
 
     /**
@@ -56,6 +63,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $data['user'] = $this->findOrFailAndReturn(User::class, $id);
+        $data['genders'] = $this->genders;
         return view('cms.user.update', $data);
     }
 
@@ -65,7 +73,7 @@ class UserController extends Controller
     public function update(UserRequest $request, string $id)
     {
         $user = $this->userService->updateUser($id, $request);
-        return redirect()->route('users.list')->with('notice', ['success', 'Cập nhật thành công!']);
+        return redirect()->route('users.list')->with('notice', ['success', 'Update user successfully!']);
     }
 
     /**
@@ -73,6 +81,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = $this->userService->deleteUser($id);
+        return json_encode([
+            'statusCode' => 200,
+            'message' => 'Delete user successfully!'
+        ]);
     }
 }

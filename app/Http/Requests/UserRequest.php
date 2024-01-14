@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Closure;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -28,11 +29,40 @@ class UserRequest extends FormRequest
         if($req->method() == 'PUT'){
             $uniqueEmail->ignore($req->id);
         }
+        $passwordRule = ['regex:/^(?=.*[!@#$%^&*()-_=+{};:,<.>])(?=.*[0-9]).{8,20}$/', 'min:8', 'max:20', 'confirmed'];
+        $confirmPasswordRule = [];
+        if($req->isMethod('POST')){
+            array_unshift($passwordRule, 'required');
+            $confirmPasswordRule[] = 'required';
+        }
         return [
             'name' => ['required', 'max:255'],
             'email' => ['required', 'email', $uniqueEmail, 'max:255'],
             'avatar' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'phone' => ["nullable", "regex:/^0+[0-9]{9,10}$/"]
+            'phone' => ["nullable", "regex:/^0+[0-9]{9,10}$/"],
+            'password' => $passwordRule, 
+            'password_confirmation' => $confirmPasswordRule
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if($validator->failed()) {
+                if($this->hasFile('avatar')){
+                    session()->flash('originName', pathinfo($this->file('avatar')->hashName(), PATHINFO_FILENAME));
+                    return redirect()->back()->withInput()->withErrors($validator)
+                    ->with('image', fileUpload($this->file('avatar'), '', 'uploads/tmp-users'));
+                }
+                if($this->password){
+                    session()->flash("oldPassword", $this->password);
+                    return redirect()->back()->withInput()->withErrors($validator);
+                }
+                if($this->password_confirmation){
+                    session()->flash("oldConfirmPassword", $this->password_confirmation);
+                    return redirect()->back()->withInput()->withErrors($validator);
+                }
+            }
+        });
     }
 }

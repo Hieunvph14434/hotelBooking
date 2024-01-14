@@ -16,6 +16,9 @@
         <input autocomplete="{{ $autocomplete }}" type="{{ $type }}" 
         class="{{ $datepicker ? "datepicker " : "" }}form-control @error($name) is-invalid @enderror" 
         value="{{ $oldValue }}" name="{{ $name }}" id="{{ $name }}" placeholder="{{ $placeholder }}" >
+        @if ($type == "password")
+            <i class="fa-regular fa-eye element-absolute toggle-password"></i>
+        @endif
     @endif
     @error($name)
         <span class="text-danger" role="alert">

@@ -1,11 +1,7 @@
 <?php
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 // set default image 
-
-use Cloudinary\Api\Exception\ApiError;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Support\Facades\Storage;
-
 if(!function_exists('defaultImage')){
     function defaultImage() {
         return 'assets/default-avatar.jpg';
@@ -24,11 +20,10 @@ if(!function_exists('checkIssetImage')){
             $dataImage = fileUpload($file, $data['prefixName'], $data['folder']);
         }
         if($req['tmp_image'] && $req['origin_name'] !== null){
-            $sourcePath = $req['tmp_image'];
-            $destinationPath = $data['folder'] . '/';
-            $newFileName = $req['origin_name'];
-            $dataImage = $destinationPath . $newFileName;
-            Storage::move($sourcePath, $dataImage);
+            $publicId = time() . '_' .$req['origin_name'];
+            $from = $req['tmp_image'];
+            $to = $data['folder'] . '/' . $publicId;
+            $dataImage = moveImage($from, $to);
         }
         return $dataImage;
     }
@@ -37,32 +32,43 @@ if(!function_exists('checkIssetImage')){
 // save file
 if(!function_exists('fileUpload')){
     function fileUpload ($file, $prefixName = '', $folder = ''){
-        $fileName = $file->hashName();
+        $fileName = pathinfo($file->hashName(), PATHINFO_FILENAME);
         $fileName = $prefixName
         ? $prefixName.'_'.$fileName
         : time() .'_'.$fileName;
-        $result = $file->storeOnCloudinaryAs($folder, pathinfo($fileName, PATHINFO_FILENAME));
-        return $result->getSecurePath();
+        $result = $file->storeOnCloudinaryAs($folder, $fileName);
+        return $result->getPublicId();
     }
 }
 
 // delete file in storage
 if(!function_exists('deleteFile')){
-    function deleteFile ($dataImage) {
-        $publicId = pathinfo(parse_url($dataImage, PHP_URL_PATH), PATHINFO_FILENAME);
-        try {
-            // Use the Cloudinary Laravel integration to delete the image
+    function deleteFile ($publicId) {
+        $getUrl = getImageUrl($publicId); 
+        if($getUrl) {
             Cloudinary::destroy($publicId);
-
-            return "Image deleted from Cloudinary!";
-        } catch (ApiError $e) {
-            // Check if the error indicates that the resource doesn't exist
-            if (strpos($e->getMessage(), 'No such file or directory') !== false) {
-                return "Image does not exist on Cloudinary.";
-            } else {
-                // Handle other API errors
-                return "Error deleting image: " . $e->getMessage();
-            }
         }
+    }
+}
+
+// get url image 
+if(!function_exists('getImageUrl')) {
+    function getImageUrl($publicId) {
+        return Cloudinary::getUrl($publicId);
+    }
+}
+
+// move an asset from one folder to another
+if(!function_exists('moveImage')) {
+    function moveImage($from, $to) {
+        Cloudinary::rename($from, $to);
+        return $to;
+    }
+}
+
+if(!function_exists('oldOValue')) {
+    function oldOValue($field, $currentField, $errors)
+    {
+        return $errors->any() ? old($field) : $currentField;
     }
 }

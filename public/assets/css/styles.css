@@ -32,3 +32,72 @@
 .list-user {
     width: 90%;
 }
+#previewImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 100rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.col.element-relative {
+    position: relative;
+    width: 100%;
+}
+
+.col.element-relative .element-absolute {
+    position: absolute;
+    top: 60%;
+    right: 0.75rem;
+}
+
+div.elm-relative {
+    position: relative;
+}
+
+.elm-relative i.elm-absolute{
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 38%;
+    bottom: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 100rem;
+    cursor: pointer;
+}
+
+.square-container {
+    width: 100px;  
+    height: 100px;  
+    position: relative;
+    background-color: #e0e0e0; 
+}
+
+.square-content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.square-content::before,
+.square-content::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px; 
+    background-color: #ccc; 
+}
+
+.square-content::before {
+    transform: rotate(-45deg);
+}
+
+.square-content::after { 
+    transform: rotate(45deg);
+}

@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Cms\CategoryController;
+use App\Http\Controllers\Cms\RoomController;
 use App\Http\Controllers\Cms\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +26,56 @@ Route::get('/', function () {
 
 Route::prefix('/users')->controller(UserController::class)->name('users.')->group(function() {
     Route::get('/', 'index')->name('list');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/create', 'store')->name('store');
     Route::get('/edit/{id}', 'edit')->name('edit');
     Route::put('/edit/{id}', 'update')->name('update');
     Route::delete('/delete/{id}', 'destroy')->name('delete');
 });
+
+Route::prefix('/room-types')->controller(CategoryController::class)->name('roomTypes.')->group(function() {
+    Route::get('/', 'index')->name('list');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/create', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::put('/edit/{id}', 'update')->name('update');
+    Route::delete('/delete/{id}', 'destroy')->name('delete');
+});
+
+Route::prefix('/rooms')->controller(RoomController::class)->name('rooms.')->group(function() {
+    Route::get('/', 'index')->name('list');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/create', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::put('/edit/{id}', 'update')->name('update');
+    Route::delete('/delete/{id}', 'destroy')->name('delete');
+});
+
+Route::delete('/cloudinary-delete', function(Request $request) {
+    $statusCode = 200;
+    $message = "";
+    $publicId = $request->image ?? null;
+    try {
+        if(! is_null($publicId)) {
+            deleteFile($publicId);
+        }
+        $message = "Delete image successfully!";
+    } catch (\Exception $exception) {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            $message = "Resource not found";
+            $statusCode = 404;
+        } else {
+            $message = "Internal Server Error";
+            $statusCode = 500; 
+        }
+        Log::error($exception->getMessage());
+    }
+    return json_encode([
+        'statusCode' => $statusCode,
+        'message' => $message
+    ]);
+});
+
 
 Auth::routes();
 
