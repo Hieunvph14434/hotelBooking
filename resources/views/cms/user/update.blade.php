@@ -40,11 +40,11 @@
                 <div class="col-md-6 mb-3">
                     @php
                         $publicId = session('image') ? session('image') 
-                        : ($user->avatar ==  defaultImage() ? "defaultI" : $user->avatar); 
+                        : ($user->avatar ==  defaultImage() ? "default" : $user->avatar); 
                     @endphp
                     <div class="text-center d-flex gap-3 align-items-center">
                         <div>
-                            <img src="{{ $publicId == "defaultI" ? asset(defaultImage()) : getImageUrl($publicId) }}" id="previewImage" alt="" class="img-fluid rounded-circle">
+                            <img src="{{ $publicId == "default" ? asset(defaultImage()) : getImageUrl($publicId) }}" id="previewImage" alt="" class="img-fluid rounded-circle">
                         </div>
                         <div>
                             <label for="avatar" class="btn btn-primary">Tải lên</label>

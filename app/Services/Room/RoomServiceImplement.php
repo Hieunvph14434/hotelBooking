@@ -41,6 +41,7 @@ class RoomServiceImplement extends Service implements RoomService{
     {
       $currentData = $this->mainRepository->findOrFail($id);
       $data = $request->all();
+      $data['image'] = null;
       if($request->hasFile('image')) {
         $data['image'] = checkIssetImage($request, [
           'image'=>'image',

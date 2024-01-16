@@ -41,8 +41,9 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoomRequest $request)
+    public function store(Request $request)
     {
+        // dd($request->all());
         try {
             $room = $this->roomService->createRoom($request);
             $this->message = ['error', 'Create room successfully!']; 
@@ -67,6 +68,8 @@ class RoomController extends Controller
     public function edit(string $id)
     {
         $data['room'] = $this->findOrFailAndReturn(Room::class, $id);
+        $data['roomTypes'] = $this->getListRoomType();
+        $data['status'] = $this->status;
         return view('cms.room.update', $data);
     }
 

@@ -20,4 +20,8 @@ class Room extends Model
         'status',
         'room_no'
     ];
+
+    public function roomType() {
+        return $this->hasOne(Category:: class, 'id', 'type');
+    }
 }

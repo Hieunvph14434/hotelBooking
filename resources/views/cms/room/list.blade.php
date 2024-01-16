@@ -21,18 +21,23 @@
             </thead>
             <tbody>
                 @forelse($rooms as $room)
-                    <tr>
+                    <tr class="align-middle">
                         <td>{{ $loop->index }}</td>
                         <td>{{ $room->name }}</td>
-                        <td>{{ $room->image }}</td>
-                        <td>{{ $room->type }}</td>
+                        <td>
+                            @php
+                                $roomImage = $room->image == defaultImage() ? "default" : $room->image;
+                            @endphp
+                            <img src="{{ $roomImage == "default" ? asset($room->image) : getImageUrl($room->image) }}" width="80" alt="image {{$room->name}}">
+                        </td>
+                        <td>{{ $room->roomType->name }}</td>
                         <td>{{ $room->room_no }}</td>
                         <td>{{ $room->price }}</td>
                         <td>{{ $room->acreage }}</td>
-                        <td>{{ $room->status }}</td>
+                        <td>{{ $room->status === 0 ? "Available" : "Unavailable" }}</td>
                         <td>
                             <div class="d-flex gap-3"> 
-                                <a href="{{ route('users.edit', $room->id) }}">
+                                <a href="{{ route('rooms.edit', $room->id) }}">
                                     <i class="fa-solid fa-pen-to-square fs-5 text-primary"></i>
                                 </a>
                                 <button id="del-btn" class="confirm-delete border-0 bg-transparent" data-uid="{{$room->id}}" data-rname="{{route('rooms.delete', ['id' => ':id']) }}">

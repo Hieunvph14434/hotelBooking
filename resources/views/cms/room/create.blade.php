@@ -39,7 +39,7 @@
                 <div class="col-md-6 mb-3">
                     <label for="" class="form-label">Room type</label>
                     <select name="type" class="form-select" id="">
-                        <option value=" ">Select status</option>
+                        <option value=" ">Select room type</option>
                         @foreach ($roomTypes as $roomTypeId => $roomType)
                             <option {{ old('type') === $roomTypeId ? "selected" : "" }} value="{{ $roomTypeId }}">{{ $roomType }}</option>
                         @endforeach
@@ -54,15 +54,15 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <div class="text-center d-flex gap-3 align-items-center">
-                        <div class="elm-relative "> 
+                        <div class="elm-relative"> 
                             <i class="fa-solid fa-xmark elm-absolute xmark-del"></i>
                             <img src="{{ session('image') ? getImageUrl(session('image')) : asset(defaultImage()) }}" id="previewImage" alt="" class="img-fluid rounded-circle">
                         </div>
                         <div>
-                            <label for="avatar" class="btn btn-primary">Upload image</label>
+                            <label for="image" class="btn btn-primary">Upload image</label>
                         </div>
                     </div>
-                    <x-form-input name="image" class="preview-img-none d-none" label="Avatar" :oldValue="old('image')" type="file" previewImg="true" />
+                    <x-form-input name="image" class="preview-img-none d-none" label="Image" :oldValue="old('image')" type="file" previewImg="true" />
                     <input type="hidden" value="{{ session('image') ?? null }}" name="tmp_image">
                     <input type="hidden" value="{{ session('originName') ?? null }}" name="origin_name">
                 </div>

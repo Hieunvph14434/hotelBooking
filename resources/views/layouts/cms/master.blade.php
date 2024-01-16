@@ -29,10 +29,17 @@
     <script>
         // preview image
         function preview() {
+            let parent = $('#previewImage').closest('div');
+            if(parent.hasClass('d-none')) {
+                parent.removeClass("d-none");
+            }
             previewImage.src = URL.createObjectURL(event.target.files[0]);
         }
         $(function(){
-
+            var previewImage = $('body').find('img#previewImage');
+            if(previewImage.attr('src') == "" || previewImage.attr('src') == null){
+                previewImage.closest('div').addClass('d-none');
+            }
             $('body').on('click', '.toggle-password', function(e){
                 let elmChangeType = $(this).prev();
                 let isTypePassword = elmChangeType.attr('type') == "password";
@@ -63,10 +70,23 @@
             });
 
             // delete image
-            // $('body').on('click', '.xmark-del', function (e) {
-            //     e.preventDefault();
+            $('body').on('click', '.xmark-del', function (e) {
+                e.preventDefault();
+                let parent = $(this).closest('div.elm-relative');
+                let image = $(this).next('img');
+                let form = $(this).parents('form');
+                let inputFile = form.find('input[type="file"]');
+                let regex = /^https:\/\/res\.cloudinary\.com/g;
                 
-            // });
+                if(regex.test(image.attr('src'))) {
+                    deleteImageCloudinary(image.attr('src'));
+                }
+                if(inputFile[0].files.length !== 0) {
+                    inputFile.val("");
+                }
+                image.attr('src', "");
+                parent.addClass('d-none');
+            });
 
         });
 
@@ -95,6 +115,28 @@
                 },
                 error: function (err) { 
                     console.log('error', err);
+                }
+            });
+        }
+
+        // delete image cloudinary
+        function deleteImageCloudinary(urlImage) {
+            let token = $('meta[name="csrf-token"]').attr('content');
+            const regexPattern = /uploads\/(.+)$/;
+            let image = urlImage.match(regexPattern);
+            $.ajax({
+                type: "DELETE",
+                url: "{{ route('delete.image.cloudinary') }}",
+                data: {
+                    _token: token,
+                    image: image[0]
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log("success", response);
+                },
+                error: function (err) {
+                    console.log("error", err);
                 }
             });
         }

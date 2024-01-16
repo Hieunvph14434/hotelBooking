@@ -54,9 +54,11 @@ Route::prefix('/rooms')->controller(RoomController::class)->name('rooms.')->grou
 Route::delete('/cloudinary-delete', function(Request $request) {
     $statusCode = 200;
     $message = "";
-    $publicId = $request->image ?? null;
+    $image = $request->image ?? null;
     try {
-        if(! is_null($publicId)) {
+        if(! is_null($image)) {
+            $pathinfo = pathinfo($image);
+            $publicId = $pathinfo['dirname'] . '/' . $pathinfo['filename'];
             deleteFile($publicId);
         }
         $message = "Delete image successfully!";
@@ -72,9 +74,9 @@ Route::delete('/cloudinary-delete', function(Request $request) {
     }
     return json_encode([
         'statusCode' => $statusCode,
-        'message' => $message
+        'message' => $message,
     ]);
-});
+})->name('delete.image.cloudinary');
 
 
 Auth::routes();

@@ -21,7 +21,7 @@ class RoomRepositoryImplement extends Eloquent implements RoomRepository{
 
     public function getListRoom($limit)
     {
-        return $this->model->query()
+        return $this->model->query()->with('roomType')
         ->whereNull("deleted_at")
         ->orderByDesc("created_at")
         ->paginate($limit);
