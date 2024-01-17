@@ -16,14 +16,14 @@
            </div>
            <div class="row">
                 <div class="col-md-6 mb-3">
-                    <x-form-input class="col" name="room_no" label="Room number" :oldValue="oldOValue('room_no', $room->room_no, $errors)" placeholder="P201" />
+                    <x-form-input class="col" name="room_no" label="Room number" required="true" :oldValue="oldOValue('room_no', $room->room_no, $errors)" placeholder="P201" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Status</label>
+                    <label for="" class="form-label">Status <span class="text-danger">*</span></label>
                     <select name="status" class="form-select" id="">
                         <option value=" ">Select status</option>
                         @foreach ($status as $key => $st)
-                            <option {{ old('status') === "$key" || !old('type') && $room->status == "$key" ? "selected" : "" }} value="{{ $key }}">{{ $st }}</option>
+                            <option {{ old('status') === "$key" || !old('status') && "$room->status" === "$key" ? "selected" : "" }} value="{{ $key }}">{{ $st }}</option>
                         @endforeach
                     </select>
                     @error('status')
@@ -35,14 +35,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <x-form-input class="col element-relative"  name="acreage" label="Acreage" :oldValue="oldOValue('acreage', $room->acreage, $errors)" placeholder="16m2" />
+                    <x-form-input class="col element-relative"  name="acreage" label="Acreage" required="true" :oldValue="oldOValue('acreage', $room->acreage, $errors)" placeholder="16m2" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Room type</label>
+                    <label for="" class="form-label">Room type <span class="text-danger">*</span></label>
                     <select name="type" class="form-select" id="">
                         <option value=" ">Select room type</option>
                         @foreach ($roomTypes as $roomTypeId => $roomType)
-                            <option {{ old('type') === $roomTypeId || !old('type') && $room->type == $roomTypeId ? "selected" : "" }} value="{{ $roomTypeId }}">{{ $roomType }}</option>
+                            <option {{ old('type') == $roomTypeId || !old('type') && $room->type == $roomTypeId ? "selected" : "" }} value="{{ $roomTypeId }}">{{ $roomType }}</option>
                         @endforeach
                     </select>
                     @error('type')

@@ -20,10 +20,31 @@
                 @include('layouts.cms.aside')
             </div>
             <div class="content w-100">
+                <div class="dropdown">
+                    <i class="fa-regular fa-user icon-user toggle-dropdown" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </li>
+                      
+                    </ul>
+                  </div>
+                  
                 @yield('content')
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -40,6 +61,10 @@
             if(previewImage.attr('src') == "" || previewImage.attr('src') == null){
                 previewImage.closest('div').addClass('d-none');
             }
+            $(document).ready(function () {
+                $('.toggle-dropdown').dropdown();
+            });
+
             $('body').on('click', '.toggle-password', function(e){
                 let elmChangeType = $(this).prev();
                 let isTypePassword = elmChangeType.attr('type') == "password";

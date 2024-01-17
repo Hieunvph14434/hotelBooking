@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -28,13 +29,26 @@ class RoomRequest extends FormRequest
             $uniqueName->ignore($req->id);
         }
         return [
-            'name' => ['required', $uniqueName, 'regex: /[^!@#$%^&*()-_=+{};:,<.>]$/', 'max:255'],
+            'name' => ['required', $uniqueName, 'regex: /^[^!@#$%^&*()_=\+{};:,<.>]+$/', 'max:255'],
             'image' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'type' => ['required'],
             'price' => ['required', 'integer', 'max:2147483647'],
             'acreage' => ['required', 'max:255'],
             'status' => ['required'],
-            'room_no' => ['required', 'integer']
+            'room_no' => ['required']
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if($validator->failed()) {
+                if($this->hasFile('image')){
+                    session()->flash('originName', pathinfo($this->file('image')->hashName(), PATHINFO_FILENAME));
+                    return redirect()->back()->withInput()->withErrors($validator)
+                    ->with('image', fileUpload($this->file('image'), '', 'uploads/tmp-rooms'));
+                }
+            }
+        });
     }
 }

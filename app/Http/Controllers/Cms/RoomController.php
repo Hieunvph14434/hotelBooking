@@ -14,7 +14,7 @@ class RoomController extends Controller
 {
     use CommonTrait;
     protected RoomService $roomService;
-    protected $status = ['Available', 'Unavailable'];
+    protected $status = ['Unavailable', 'Available'];
 
     public function __construct(RoomService $roomService) {
         $this->roomService = $roomService;
@@ -24,7 +24,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $data['rooms'] = $this->roomService->getListRoom(null);
+        $data['rooms'] = $this->roomService->getListRoom([], null);
         return view('cms.room.list', $data);
     }
 
@@ -41,9 +41,8 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
-        // dd($request->all());
         try {
             $room = $this->roomService->createRoom($request);
             $this->message = ['error', 'Create room successfully!']; 
@@ -76,7 +75,7 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RoomRequest $request, string $id)
     {
         try {
             $room = $this->roomService->updateRoom($id, $request);

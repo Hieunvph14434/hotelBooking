@@ -18,9 +18,9 @@ class RoomServiceImplement extends Service implements RoomService{
       $this->mainRepository = $mainRepository;
     }
 
-    public function getListRoom($limit)
+    public function getListRoom($searchData, $limit)
     {
-      return $this->mainRepository->getListRoom($limit);
+      return $this->mainRepository->getListRoom($searchData, $limit);
     }
 
     public function createRoom($request)

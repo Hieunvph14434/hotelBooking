@@ -101,3 +101,17 @@ div.elm-relative {
 .square-content::after { 
     transform: rotate(45deg);
 }
+
+body .icon-user{
+    position: fixed;
+    right: 30px;
+    border: 1px solid;
+    border-radius: 100rem;
+    width: 26px;
+    display: flex;
+    align-items: end;
+    height: 26px;
+    font-size: 20px;
+    justify-content: center;
+    cursor: pointer;
+}

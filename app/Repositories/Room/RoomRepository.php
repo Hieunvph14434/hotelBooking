@@ -6,5 +6,5 @@ use LaravelEasyRepository\Repository;
 
 interface RoomRepository extends Repository{
 
-    public function getListRoom($limit);
+    public function getListRoom($searchData, $limit);
 }

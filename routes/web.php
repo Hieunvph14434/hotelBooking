@@ -78,6 +78,9 @@ Route::delete('/cloudinary-delete', function(Request $request) {
     ]);
 })->name('delete.image.cloudinary');
 
+Route::get('/pageLogin', function(){
+    return view('login');
+});
 
 Auth::routes();
 

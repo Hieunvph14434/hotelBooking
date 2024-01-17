@@ -15,11 +15,11 @@
            </div>
            <div class="row">
                 <div class="col-md-6 mb-3">
-                    <x-form-input class="col" name="room_no" label="Room number" :oldValue="old('room_no')" placeholder="P201" />
+                    <x-form-input class="col" name="room_no" label="Room number" required="true" :oldValue="old('room_no')" placeholder="P201" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Status</label>
-                    <select name="status" class="form-select" id="">
+                    <label for="" class="form-label">Status <span class="text-danger">*</span></label>
+                    <select name="status" class="form-select @error('status') is-invalid @enderror" id="">
                         <option value=" ">Select status</option>
                         @foreach ($status as $key => $st)
                             <option {{ old('status') === "$key" ? "selected" : "" }} value="{{ $key }}">{{ $st }}</option>
@@ -34,14 +34,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <x-form-input class="col element-relative"  name="acreage" label="Acreage" :oldValue="old('acreage')" placeholder="16m2" />
+                    <x-form-input class="col element-relative"  name="acreage" label="Acreage" required="true" :oldValue="old('acreage')" placeholder="16m2" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="" class="form-label">Room type</label>
-                    <select name="type" class="form-select" id="">
+                    <label for="" class="form-label">Room type <span class="text-danger">*</span></label>
+                    <select name="type" class="form-select  @error('type') is-invalid @enderror" id="">
                         <option value=" ">Select room type</option>
                         @foreach ($roomTypes as $roomTypeId => $roomType)
-                            <option {{ old('type') === $roomTypeId ? "selected" : "" }} value="{{ $roomTypeId }}">{{ $roomType }}</option>
+                            <option {{ old('type') === "$roomTypeId" ? "selected" : "" }} value="{{ $roomTypeId }}">{{ $roomType }}</option>
                         @endforeach
                     </select>
                     @error('type')
@@ -56,7 +56,7 @@
                     <div class="text-center d-flex gap-3 align-items-center">
                         <div class="elm-relative"> 
                             <i class="fa-solid fa-xmark elm-absolute xmark-del"></i>
-                            <img src="{{ session('image') ? getImageUrl(session('image')) : asset(defaultImage()) }}" id="previewImage" alt="" class="img-fluid rounded-circle">
+                            <img src="{{ getImageUrl(session('image')) }}" id="previewImage" alt="" class="img-fluid rounded-circle">
                         </div>
                         <div>
                             <label for="image" class="btn btn-primary">Upload image</label>

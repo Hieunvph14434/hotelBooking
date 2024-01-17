@@ -49,6 +49,11 @@ class UserRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if($validator->failed()) {
+                if ($this->is('api/*')) {
+                    // Trả về JSON response cho request API
+                    return response()->json(['error' => $validator->errors()], 422);
+                }
+
                 if($this->hasFile('avatar')){
                     session()->flash('originName', pathinfo($this->file('avatar')->hashName(), PATHINFO_FILENAME));
                     return redirect()->back()->withInput()->withErrors($validator)

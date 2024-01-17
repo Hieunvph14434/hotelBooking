@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -25,5 +26,16 @@ class LoginRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required',
         ];
+    }
+
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->is('api/*')) {
+                // Trả về JSON response cho request API
+                return response()->json(['error' => $validator->errors()], 422);
+            }
+            return redirect()->back()->withInput()->withErrors($validator);
+        });
     }
 }

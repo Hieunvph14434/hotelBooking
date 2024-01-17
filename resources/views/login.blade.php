@@ -89,32 +89,21 @@ border-bottom-right-radius: .3rem;
                         <h4 class="mt-1 mb-5 pb-1">Hotel Booking</h4>
                       </div>
       
-                      <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                      <form>
                         <p class="fw-bold fs-2">Login</p>
                         <div class="d-flex align-items-center justify-content-start pb-4">
                             <p class="mb-0 me-2">Don't have an account?</p>
                             <a type="button" class="color-green">Request account</a>
                           </div>
       
-                        <div class="form-outline mb-{{$errors->has('email') ? 5 : 4 }}">
-                          <input type="email" id="email" class="form-control border-bot @error('email') is-invalid @enderror"/>
+                        <div class="form-outline mb-4">
+                          <input type="email" id="email" class="form-control border-bot"/>
                           <label class="form-label" for="email">Email</label>
-                        @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                         </div>
       
-                        <div class="form-outline mb-{{$errors->has('email') ? 5 : 3}}">
-                          <input type="password" id="password" class="form-control border-bot @error('password') is-invalid @enderror" />
+                        <div class="form-outline mb-3">
+                          <input type="password" id="password" class="form-control border-bot" />
                           <label class="form-label" for="password">Password</label>
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
 
                         <div class="text-end mb-4 pb-1">
@@ -122,7 +111,7 @@ border-bottom-right-radius: .3rem;
                         </div>
       
                         <div class="text-center pt-1 mb-1 pb-1">
-                          <button class="btn btn-primary btn-block fa-lg gradient-custom-2 fs-5">Log
+                          <button class="btn btn-primary btn-block fa-lg gradient-custom-2 fs-5" type="button">Log
                             in</button>
                           </div>
                       </form>

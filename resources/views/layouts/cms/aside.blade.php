@@ -5,10 +5,13 @@
     <nav class="nav">
         <ul class="menu">
             <li class="item">
-                <a href="">User management</a>
+                <a href="{{ route('users.list') }}">User management</a>
             </li>
             <li class="item">
-                <a href="">Room management</a>
+                <a href="{{ route('roomTypes.list') }}">Room type management</a>
+            </li>
+            <li class="item">
+                <a href="{{ route('rooms.list') }}">Room management</a>
             </li>
             <li class="item">
                 <a href="">Booking management</a>
